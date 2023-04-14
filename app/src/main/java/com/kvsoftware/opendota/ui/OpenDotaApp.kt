@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,7 +51,7 @@ fun OpenDotaNavHost(modifier: Modifier = Modifier, navController: NavHostControl
             modifier = modifier.padding(innerPadding)
         ) {
             composable(OpenDotaScreen.Heroes.name) {
-                HeroesScreen(hiltViewModel())
+                HeroesScreen()
             }
         }
     }
