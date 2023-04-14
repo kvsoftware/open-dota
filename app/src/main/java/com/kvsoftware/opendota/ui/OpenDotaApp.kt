@@ -10,19 +10,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.kvsoftware.opendota.R
-import com.kvsoftware.opendota.ui.page.HeroesScreen
+import com.kvsoftware.opendota.ui.page.herodetail.HeroDetailScreen
+import com.kvsoftware.opendota.ui.page.heroes.HeroesScreen
 
-enum class OpenDotaScreen(@StringRes val title: Int) {
-    Heroes(title = R.string.heroes_title),
-    HeroDetail(title = R.string.hero_detail_title)
+val defaultPage = OpenDotaScreen.Heroes
+
+enum class OpenDotaScreen(val route: String, @StringRes val title: Int) {
+    Heroes(route = "heroes", title = R.string.heroes_title),
+    HeroDetail(route = "hero/{heroId}", title = R.string.hero_detail_title)
 }
-
-val defaultPage = OpenDotaScreen.Heroes.name
 
 @Composable
 fun OpenDotaApp() {
@@ -34,7 +37,9 @@ fun OpenDotaNavHost(modifier: Modifier = Modifier, navController: NavHostControl
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
-    val currentScreen = OpenDotaScreen.valueOf(backStackEntry?.destination?.route ?: defaultPage)
+    val currentScreen = if (backStackEntry?.destination?.route != null) {
+        OpenDotaScreen.values().first { it.route == backStackEntry?.destination?.route }
+    } else defaultPage
 
     Scaffold(
         topBar = {
@@ -47,11 +52,19 @@ fun OpenDotaNavHost(modifier: Modifier = Modifier, navController: NavHostControl
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = defaultPage,
+            startDestination = defaultPage.route,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(OpenDotaScreen.Heroes.name) {
-                HeroesScreen()
+            composable(OpenDotaScreen.Heroes.route) {
+                HeroesScreen(navController)
+            }
+            composable(
+                OpenDotaScreen.HeroDetail.route,
+                listOf(navArgument("heroId") { type = NavType.IntType })
+            ) { entry ->
+                entry.arguments?.getInt("heroId")?.let { id ->
+                    HeroDetailScreen(id)
+                }
             }
         }
     }

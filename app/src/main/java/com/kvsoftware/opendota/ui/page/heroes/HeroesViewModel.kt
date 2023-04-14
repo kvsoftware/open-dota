@@ -1,4 +1,4 @@
-package com.kvsoftware.opendota.ui.page
+package com.kvsoftware.opendota.ui.page.heroes
 
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel

@@ -1,6 +1,6 @@
-package com.kvsoftware.opendota.ui.page
+package com.kvsoftware.opendota.ui.page.heroes
 
-import android.widget.Toast
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,19 +17,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.kvsoftware.opendota.R
 import com.kvsoftware.opendota.domain.model.HeroModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HeroesScreen() {
+fun HeroesScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<HeroesViewModel>()
     val items: List<HeroModel> by viewModel.heroModels.collectAsStateWithLifecycle(listOf())
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
@@ -41,15 +41,13 @@ fun HeroesScreen() {
     Box(Modifier.pullRefresh(pullRefreshState)) {
         LazyColumn {
             items(items) { heroModel ->
-                val context = LocalContext.current
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp, start = 8.dp, end = 8.dp)
                         .clickable {
-                            Toast
-                                .makeText(context, "Card", Toast.LENGTH_SHORT)
-                                .show()
+                            Log.d("Kvv", "test : ${heroModel.id}")
+                              navController.navigate("hero/${heroModel.id}")
                         }
                 ) {
                     Row {

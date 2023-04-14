@@ -1,4 +1,4 @@
-package com.kvsoftware.opendota.data
+package com.kvsoftware.opendota.data.remote
 
 import com.google.gson.GsonBuilder
 import com.kvsoftware.opendota.BuildConfig

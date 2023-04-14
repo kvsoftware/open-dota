@@ -9,6 +9,8 @@ import javax.inject.Inject
 class GetHeroesUseCase @Inject constructor(private val heroesRepository: HeroesRepository) {
 
     private val imageFullPath = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/"
+    private val fileNamePrefix = "npc_dota_hero_"
+    private val fileType = ".png"
 
     suspend operator fun invoke(apiKey: String): List<HeroModel> =
         withContext(Dispatchers.Default) {
@@ -16,14 +18,15 @@ class GetHeroesUseCase @Inject constructor(private val heroesRepository: HeroesR
             val heroModels = arrayListOf<HeroModel>()
             for (heroEntity in heroEntities) {
                 val name = heroEntity.name
-                val fileName = name.replace("npc_dota_hero_", "") + ".png"
+                val fileName = name.replace(fileNamePrefix, "") + fileType
                 heroModels.add(
                     HeroModel(
-                        heroEntity.localizedName,
-                        imageFullPath + fileName,
-                        heroEntity.primaryAttr,
-                        heroEntity.attackType,
-                        heroEntity.roles.joinToString()
+                        id = heroEntity.id,
+                        name = heroEntity.localizedName,
+                        imagePath = imageFullPath + fileName,
+                        primaryAttr = heroEntity.primaryAttr,
+                        attackType = heroEntity.attackType,
+                        roles = heroEntity.roles.joinToString()
                     )
                 )
             }
