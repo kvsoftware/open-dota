@@ -2,8 +2,9 @@ package com.kvsoftware.opendota.ui.page.herodetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kvsoftware.opendota.domain.model.HeroModel
-import com.kvsoftware.opendota.domain.usecase.GetHeroByIdUseCase
+import com.kvsoftware.opendota.domain.model.HeroDetailModel
+import com.kvsoftware.opendota.domain.usecase.GetHeroDetailByIdUseCase
+import com.kvsoftware.opendota.domain.usecase.SetFavoriteHeroUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,18 +13,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HeroDetailViewModel @Inject constructor(private val getHeroByIdUseCase: GetHeroByIdUseCase) : ViewModel() {
+class HeroDetailViewModel @Inject constructor(
+    private val getHeroDetailByIdUseCase: GetHeroDetailByIdUseCase,
+    private val setFavoriteHeroUseCase: SetFavoriteHeroUseCase,
+) : ViewModel() {
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    private var _heroModel = MutableStateFlow<HeroModel?>(null)
-    val heroModel: StateFlow<HeroModel?> = _heroModel.asStateFlow()
-
+    private var _heroDetailModel = MutableStateFlow<HeroDetailModel?>(null)
+    val heroDetailModel: StateFlow<HeroDetailModel?> = _heroDetailModel.asStateFlow()
     fun getHeroById(id: Int) {
         viewModelScope.launch {
-            _heroModel.emit(getHeroByIdUseCase.invoke(id))
-            _isLoading.emit(false)
+            _heroDetailModel.emit(getHeroDetailByIdUseCase.invoke(id))
+        }
+    }
+
+    fun setFavorite() {
+        viewModelScope.launch {
+            val heroDetailModel = heroDetailModel.value ?: return@launch
+            _heroDetailModel.emit(setFavoriteHeroUseCase.invoke(heroDetailModel.id, !heroDetailModel.isFavorited))
         }
     }
 }

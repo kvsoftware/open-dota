@@ -3,6 +3,7 @@ package com.kvsoftware.opendota.di
 import android.content.Context
 import androidx.room.Room
 import com.kvsoftware.opendota.data.local.AppDatabase
+import com.kvsoftware.opendota.data.local.FavoriteDao
 import com.kvsoftware.opendota.data.local.HeroDao
 import com.kvsoftware.opendota.data.remote.HeroApi
 import com.kvsoftware.opendota.data.remote.RestClient
@@ -46,5 +47,11 @@ object ApplicationModule {
     @Singleton
     fun provideHeroDao(appDatabase: AppDatabase): HeroDao {
         return appDatabase.heroDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteDao(appDatabase: AppDatabase): FavoriteDao {
+        return appDatabase.favoriteDao()
     }
 }

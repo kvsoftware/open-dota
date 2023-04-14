@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kvsoftware.opendota.R
+import com.kvsoftware.opendota.ui.page.favoritedHeroes.FavoritedHeroesScreen
 import com.kvsoftware.opendota.ui.page.herodetail.HeroDetailScreen
 import com.kvsoftware.opendota.ui.page.heroes.HeroesScreen
 
@@ -24,7 +26,8 @@ val defaultPage = OpenDotaScreen.Heroes
 
 enum class OpenDotaScreen(val route: String, @StringRes val title: Int) {
     Heroes(route = "heroes", title = R.string.heroes_title),
-    HeroDetail(route = "hero/{heroId}", title = R.string.hero_detail_title)
+    HeroDetail(route = "hero/{heroId}", title = R.string.hero_detail_title),
+    FavoritedHeroes(route = "favorited_heroes", title = R.string.favorited_heroes_title),
 }
 
 @Composable
@@ -46,7 +49,8 @@ fun OpenDotaNavHost(modifier: Modifier = Modifier, navController: NavHostControl
             OpenDotaAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                navigateFavoritedPage = { navController.navigate(OpenDotaScreen.FavoritedHeroes.route) }
             )
         }
     ) { innerPadding ->
@@ -66,6 +70,9 @@ fun OpenDotaNavHost(modifier: Modifier = Modifier, navController: NavHostControl
                     HeroDetailScreen(id)
                 }
             }
+            composable(OpenDotaScreen.FavoritedHeroes.route) {
+                FavoritedHeroesScreen(navController)
+            }
         }
     }
 }
@@ -75,6 +82,7 @@ fun OpenDotaAppBar(
     currentScreen: OpenDotaScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
+    navigateFavoritedPage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -85,6 +93,16 @@ fun OpenDotaAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.global_back_button)
+                    )
+                }
+            }
+        },
+        actions = {
+            if (currentScreen == OpenDotaScreen.Heroes) {
+                IconButton(onClick = navigateFavoritedPage) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
                         contentDescription = stringResource(R.string.global_back_button)
                     )
                 }

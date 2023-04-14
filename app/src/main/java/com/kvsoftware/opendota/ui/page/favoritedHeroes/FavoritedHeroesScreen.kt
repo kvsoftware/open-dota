@@ -1,4 +1,4 @@
-package com.kvsoftware.opendota.ui.page.heroes
+package com.kvsoftware.opendota.ui.page.favoritedHeroes
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,8 +28,8 @@ import com.kvsoftware.opendota.domain.model.HeroModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HeroesScreen(navController: NavHostController) {
-    val viewModel = hiltViewModel<HeroesViewModel>()
+fun FavoritedHeroesScreen(navController: NavHostController) {
+    val viewModel = hiltViewModel<FavoritedHeroesViewModel>()
     val items: List<HeroModel> by viewModel.heroModels.collectAsStateWithLifecycle(listOf())
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(isLoading, { viewModel.getHeroes() })
