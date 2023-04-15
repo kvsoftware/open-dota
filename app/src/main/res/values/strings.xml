@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">OpenDota</string>
+    <string name="global_back_button">Back</string>
+    <string name="heroes_title">Heroes</string>
+    <string name="heroes_primary_attr">Primary Attr:&#160;</string>
+    <string name="heroes_attack_type">Attack Type:&#160;</string>
+    <string name="heroes_roles">Roles:&#160;</string>
+    <string name="hero_detail_title">Hero Detail</string>
+    <string name="favorited_heroes_title">Favorited Hero</string>
+    <string name="api_key" translatable="false"></string>
 </resources>
