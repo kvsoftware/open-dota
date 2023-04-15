@@ -21,15 +21,9 @@ class FavoritedHeroesViewModel @Inject constructor(private val getFavoritedHeroe
     private var _heroModels = MutableStateFlow<List<HeroModel>>(listOf())
     val heroModels: StateFlow<List<HeroModel>> = _heroModels.asStateFlow()
 
-    private lateinit var apiKey: String
-
-    fun init(apiKey: String) {
-        this.apiKey = apiKey
-    }
-
     fun getHeroes() {
         viewModelScope.launch {
-            _heroModels.emit(getFavoritedHeroesUseCase.invoke(apiKey))
+            _heroModels.emit(getFavoritedHeroesUseCase.invoke())
             _isLoading.emit(false)
         }
     }

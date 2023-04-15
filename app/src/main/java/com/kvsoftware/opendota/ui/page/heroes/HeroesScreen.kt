@@ -34,7 +34,6 @@ fun HeroesScreen(navController: NavHostController) {
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(isLoading, { viewModel.getHeroes() })
 
-    viewModel.init(stringResource(R.string.api_key))
     viewModel.getHeroes()
 
     Box(Modifier.pullRefresh(pullRefreshState)) {

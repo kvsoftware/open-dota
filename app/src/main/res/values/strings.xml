@@ -7,5 +7,4 @@
     <string name="heroes_roles">Roles:&#160;</string>
     <string name="hero_detail_title">Hero Detail</string>
     <string name="favorited_heroes_title">Favorited Hero</string>
-    <string name="api_key" translatable="false"></string>
 </resources>
