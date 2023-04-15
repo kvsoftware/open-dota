@@ -23,9 +23,9 @@ class HeroesRepository @Inject constructor(
         return heroLocalEntity.toHeroEntity()
     }
 
-    suspend fun getHeroes(apiKey: String): List<HeroEntity> {
+    suspend fun getHeroes(): List<HeroEntity> {
         try {
-            val heroRemoteEntities = heroesRemoteDataSource.getHeroes(apiKey)
+            val heroRemoteEntities = heroesRemoteDataSource.getHeroes()
             heroesLocalDataSource.updateHeroes(heroRemoteEntities.map { it.toHeroLocalEntity() })
         } catch (e: Exception) {
             Log.d(tag, "Connection failed, using local data source")

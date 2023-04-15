@@ -12,9 +12,9 @@ class GetFavoritedHeroesUseCase @Inject constructor(
     private val heroesRepository: HeroesRepository,
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(apiKey: String): List<HeroModel> = withContext(Dispatchers.Default) {
+    suspend operator fun invoke(): List<HeroModel> = withContext(Dispatchers.Default) {
         val favoritedHeroIds = favoriteRepository.getFavorites().map { it.id }
-        val heroEntities = heroesRepository.getHeroes(apiKey).sortedBy { it.name }.filter { favoritedHeroIds.contains(it.id) }
+        val heroEntities = heroesRepository.getHeroes().sortedBy { it.name }.filter { favoritedHeroIds.contains(it.id) }
         heroEntities.map { it.toHeroModel() }
     }
 }

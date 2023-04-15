@@ -8,8 +8,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetHeroesUseCase @Inject constructor(private val heroesRepository: HeroesRepository) {
-    suspend operator fun invoke(apiKey: String): List<HeroModel> = withContext(Dispatchers.Default) {
-        val heroEntities = heroesRepository.getHeroes(apiKey).sortedBy { it.name }
+    suspend operator fun invoke(): List<HeroModel> = withContext(Dispatchers.Default) {
+        val heroEntities = heroesRepository.getHeroes().sortedBy { it.name }
         heroEntities.map { it.toHeroModel() }
     }
 }

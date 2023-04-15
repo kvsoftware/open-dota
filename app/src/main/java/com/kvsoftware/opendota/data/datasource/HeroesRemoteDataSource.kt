@@ -5,7 +5,7 @@ import com.kvsoftware.opendota.data.remote.HeroApi
 import javax.inject.Inject
 
 class HeroesRemoteDataSource @Inject constructor(private val heroApi: HeroApi) {
-    suspend fun getHeroes(apiKey: String): List<HeroRemoteEntity> {
-        return heroApi.getHeroes(apiKey = apiKey)
+    suspend fun getHeroes(): List<HeroRemoteEntity> {
+        return heroApi.getHeroes()
     }
 }
